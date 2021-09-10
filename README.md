@@ -1,6 +1,8 @@
 # restaurant-reservation-system
 Project for COSC 4351 - Fundamentals of Software Engineering
 
+
+
 # Setup
 
 In the /frontend/ directory run `npm install`.
