@@ -5,9 +5,7 @@ Project for COSC 4351 - Fundamentals of Software Engineering
 
 ## Setup
 
-In the /frontend/ directory run `npm install`.
-
-In the /backend/ directory, [follow these steps](https://flask.palletsprojects.com/en/2.0.x/installation/#python-version), skipping the `mkdir myproject` and `cd myproject`.
+In the root and /frontend/ directory run `npm install`.
 
 
 
