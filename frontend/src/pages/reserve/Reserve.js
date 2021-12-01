@@ -7,7 +7,7 @@ export default class Reserve extends Component {
   // This is the constructor that stores the data.
   constructor(props) {
     super(props);
- 
+    
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangePhone = this.onChangePhone.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -81,7 +81,12 @@ export default class Reserve extends Component {
  
     axios
       .post("http://localhost:5000/record/add-reservation", newReservation)
-      .then((res) => alert(res.data))
+      .then((res) => { 
+            alert(res.data);
+            if(res.data === 'Reservation added, special day (holiday/weekend), hold fee required')
+                prompt("Enter credit card #:");
+            
+        })
       .catch(function(error) { alert(error) });
  
     // We will empty the state after posting the data to the database

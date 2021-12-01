@@ -82,7 +82,11 @@ recordRoutes.route("/record/add-reservation").post(async function (req, response
       };
       await db_connect.collection("reservations").insertOne(myobj, function (err, res) {
         if (err) throw err;
-        response.json("Reservation successfully added");
+        let currDate = new Date(req.body.startDate)
+        if(currDate.getDay() == 6 || currDate.getDay() == 0)
+          response.json('Reservation added, special day (holiday/weekend), hold fee required');
+        else
+          response.json("Reservation successfully added");
       });
     }
   } catch(e) {
