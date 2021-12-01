@@ -37,17 +37,54 @@ recordRoutes.route("/record/:id").get(function (req, res) {
 });
 
 // This section will help you create a new record.
-recordRoutes.route("/record/add").post(function (req, response) {
+recordRoutes.route("/record/add").post(async function (req, response) {
   let db_connect = dbo.getDb();
-  let myobj = {
-    person_name: req.body.person_name,
-    person_position: req.body.person_position,
-    person_level: req.body.person_level,
-  };
-  db_connect.collection("records").insertOne(myobj, function (err, res) {
-    if (err) throw err;
-    response.json(res);
-  });
+
+  let unavailableTables = [];
+
+  let myquery = { startDate: {$lt: req.body.endDate}, endDate: {$gt: req.body.startDate}};
+  await db_connect
+      .collection("reservations")
+      .find(myquery)
+      .forEach( function(doc) { 
+        doc.tables.forEach(element => unavailableTables.push(element));
+      } );
+  
+  let availableCapacity = 0;
+  let tablesToUse = [];
+  await db_connect
+      .collection("tables")
+      .find({})
+      .forEach( function(doc) { 
+        if(!unavailableTables.includes(doc.tableId)) {
+          if(availableCapacity < req.body.numGuests) {
+            tablesToUse.push(doc.tableId);
+          }
+          console.log(doc.capacity);
+          availableCapacity += doc.capacity;
+        }
+      } );
+
+  console.log(availableCapacity);
+
+  if (availableCapacity < req.body.numGuests) {
+    throw 'Not enough capacity for number of guests';
+  } else {
+    let myobj = {
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      name: req.body.name,
+      phone: req.body.phone,
+      email: req.body.email,
+      numGuests: req.body.numGuests,
+      tables: tablesToUse,
+    };
+    await db_connect.collection("reservations").insertOne(myobj, function (err, res) {
+      if (err) throw err;
+      response.json(res);
+    });
+  }
+  
 });
 
 // This section will help you update a record by id.
