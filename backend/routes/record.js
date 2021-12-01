@@ -37,7 +37,7 @@ recordRoutes.route("/record/:id").get(function (req, res) {
 });
 
 // This section will help you create a new record.
-recordRoutes.route("/record/add").post(async function (req, response) {
+recordRoutes.route("/record/add-reservation").post(async function (req, response) {
   let db_connect = dbo.getDb();
 
   let unavailableTables = [];

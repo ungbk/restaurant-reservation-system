@@ -8,7 +8,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     return (
         <div className="website__navbar">
-        <h1 className="website__navbar-links_logo">Sussy little baka restaurant ^.^</h1>
+        <h1 className="website__navbar-links_logo">SLB Eatery</h1>
         <div className="website__navbar-links">
             <div className="website__navbar-links_container">
               <p onClick={() => navigate("/")}>Home</p>

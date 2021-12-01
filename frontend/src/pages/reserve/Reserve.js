@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
+import {Navbar} from '../../components';
  
 export default class Reserve extends Component {
   // This is the constructor that stores the data.
@@ -79,7 +80,7 @@ export default class Reserve extends Component {
     };
  
     axios
-      .post("http://localhost:5000/record/add", newReservation)
+      .post("http://localhost:5000/record/add-reservation", newReservation)
       .then((res) => alert(res.data))
       .catch(function(error) { alert(error) });
  
@@ -93,10 +94,11 @@ export default class Reserve extends Component {
         numGuests: 1
     });
   }
- 
+  
   // This following section will display the form that takes the input from the user.
   render() {
     return (
+        
       <div style={{ marginTop: 20 }}>
         <h3>Create New Reservation</h3>
         <form onSubmit={this.onSubmit}>
