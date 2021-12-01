@@ -1,4 +1,7 @@
 const express = require("express");
+const Holidays = require('date-holidays');
+var hd = new Holidays();
+hd.init('US');
 
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -83,7 +86,7 @@ recordRoutes.route("/record/add-reservation").post(async function (req, response
       await db_connect.collection("reservations").insertOne(myobj, function (err, res) {
         if (err) throw err;
         let currDate = new Date(req.body.startDate)
-        if(currDate.getDay() == 6 || currDate.getDay() == 0)
+        if(currDate.getDay() == 6 || currDate.getDay() == 0 || hd.isHoliday(currDate))
           response.json('Reservation added, special day (holiday/weekend), hold fee required');
         else
           response.json("Reservation successfully added");
