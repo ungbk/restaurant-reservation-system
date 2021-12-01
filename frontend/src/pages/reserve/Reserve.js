@@ -21,7 +21,7 @@ export default class Reserve extends Component {
         name: "",
         phone: "",
         email: "",
-        numGuests: 0
+        numGuests: 1
     };
   }
  
@@ -30,6 +30,8 @@ export default class Reserve extends Component {
     this.setState({
       startDate: e.target.value,
     });
+    document.getElementById("end-date").disabled = false;
+    document.getElementById("end-date").value = this.state.startDate;
   }
  
   onChangeEndDate(e) {
@@ -78,17 +80,17 @@ export default class Reserve extends Component {
  
     axios
       .post("http://localhost:5000/record/add", newReservation)
-      .then((res) => console.log(res.data))
+      .then((res) => alert(res.data))
       .catch(function(error) { alert(error) });
  
     // We will empty the state after posting the data to the database
     this.setState({
-        startDate: "",
+        startDate: new Date(),
         endDate: "",
         name: "",
         phone: "",
         email: "",
-        numGuests: 0
+        numGuests: 1
     });
   }
  
@@ -105,6 +107,7 @@ export default class Reserve extends Component {
               className="form-control"
               value={this.state.name}
               onChange={this.onChangeName}
+              required
             />
           </div>
           <div className="form-group">
@@ -114,6 +117,7 @@ export default class Reserve extends Component {
               className="form-control"
               value={this.state.email}
               onChange={this.onChangeEmail}
+              required
             />
           </div>
           <div className="form-group">
@@ -123,6 +127,7 @@ export default class Reserve extends Component {
               className="form-control"
               value={this.state.phone}
               onChange={this.onChangePhone}
+              required
             />
           </div>
           <div className="form-group">
@@ -132,6 +137,8 @@ export default class Reserve extends Component {
               className="form-control"
               value={this.state.numGuests}
               onChange={this.onChangeNumGuests}
+              min="1"
+              required
             />
           </div>
           <div className="form-group">
@@ -141,15 +148,21 @@ export default class Reserve extends Component {
               className="form-control"
               value={this.state.startDate}
               onChange={this.onChangeStartDate}
+              min={new Date()}
+              required
             />
           </div>
           <div className="form-group">
             <label>End date: </label>
             <input
+                id="end-date"
               type="datetime-local"
               className="form-control"
               value={this.state.endDate}
               onChange={this.onChangeEndDate}
+              required
+              disabled
+              min={this.state.startDate}
             />
           </div>
           <div className="form-group">

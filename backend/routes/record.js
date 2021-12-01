@@ -66,23 +66,27 @@ recordRoutes.route("/record/add").post(async function (req, response) {
       } );
 
   console.log(availableCapacity);
-
-  if (availableCapacity < req.body.numGuests) {
-    throw 'Not enough capacity for number of guests';
-  } else {
-    let myobj = {
-      startDate: req.body.startDate,
-      endDate: req.body.endDate,
-      name: req.body.name,
-      phone: req.body.phone,
-      email: req.body.email,
-      numGuests: req.body.numGuests,
-      tables: tablesToUse,
-    };
-    await db_connect.collection("reservations").insertOne(myobj, function (err, res) {
-      if (err) throw err;
-      response.json(res);
-    });
+  
+  try {
+    if (availableCapacity < req.body.numGuests) {
+      throw 'Not enough capacity for number of guests';
+    } else {
+      let myobj = {
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        numGuests: req.body.numGuests,
+        tables: tablesToUse,
+      };
+      await db_connect.collection("reservations").insertOne(myobj, function (err, res) {
+        if (err) throw err;
+        response.json("Reservation successfully added");
+      });
+    }
+  } catch(e) {
+    response.json(e);
   }
   
 });
